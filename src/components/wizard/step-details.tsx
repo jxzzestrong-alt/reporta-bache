@@ -48,7 +48,7 @@ export function StepDetails({ value, onChange }: { value: string; onChange: (v: 
               key={q}
               type="button"
               onClick={() => add(q)}
-              className="flex min-h-11 items-center gap-1.5 rounded-full border-2 border-asfalto bg-white px-4 text-[0.95rem] font-semibold hover:bg-pintura"
+              className="flex min-h-11 items-center gap-1.5 rounded-full border-2 border-asfalto bg-white px-4 text-[0.95rem] font-semibold transition-[transform,background-color] duration-150 hover:-translate-y-0.5 hover:bg-pintura active:translate-y-0.5"
             >
               <Plus className="size-4" aria-hidden /> {q}
             </button>

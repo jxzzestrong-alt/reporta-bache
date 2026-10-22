@@ -15,9 +15,9 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="asphalt text-white print:hidden">
+    <header className="asphalt z-[1200] text-white sm:sticky sm:top-0 print:hidden">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:py-4">
-        <Link href="/" className="flex items-center gap-3 rounded-md" aria-label="Inicio: Reporta Bache">
+        <Link href="/" className="group flex items-center gap-3 rounded-md" aria-label="Inicio: Reporta Bache">
           <BrandMark />
           <span className="leading-tight">
             <span className="block text-xl font-extrabold tracking-tight sm:text-2xl">Reporta Bache</span>
@@ -35,10 +35,10 @@ export function SiteHeader() {
                     href={href}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "flex min-h-12 items-center gap-2 rounded-[var(--radius-control)] border-2 px-3 text-base font-bold transition-colors sm:px-4",
+                      "flex min-h-12 items-center gap-2 rounded-[var(--radius-control)] border-2 px-3 text-base font-bold transition-[transform,background-color,border-color] duration-150 hover:-translate-y-0.5 active:translate-y-0.5 sm:px-4",
                       active
                         ? "border-pintura bg-pintura text-asfalto"
-                        : "border-white/40 text-white hover:border-white",
+                        : "border-white/40 text-white hover:border-white hover:bg-white/10",
                     )}
                   >
                     <Icon className="size-5 shrink-0" aria-hidden />
@@ -51,7 +51,8 @@ export function SiteHeader() {
           </ul>
         </nav>
       </div>
-      <div className="lane-dashes h-4" aria-hidden />
+      {/* En la portada la línea la dibuja el encabezado grande */}
+      {pathname !== "/" && <div className="lane-dashes h-4" aria-hidden />}
     </header>
   );
 }
@@ -59,7 +60,7 @@ export function SiteHeader() {
 function BrandMark() {
   // Un bache visto desde arriba, interrumpiendo la línea central.
   return (
-    <svg viewBox="0 0 44 44" className="size-11 shrink-0" aria-hidden>
+    <svg viewBox="0 0 44 44" className="size-11 shrink-0 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105" aria-hidden>
       <rect width="44" height="44" rx="10" fill="#2c343a" />
       <rect x="2" y="20" width="10" height="4" rx="1" fill="#ffc72c" />
       <rect x="32" y="20" width="10" height="4" rx="1" fill="#ffc72c" />

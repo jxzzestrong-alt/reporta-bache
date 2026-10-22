@@ -167,7 +167,7 @@ export function CitizenMap({
                     aria-pressed={on}
                     onClick={() => toggle(u)}
                     className={cn(
-                      "flex min-h-11 items-center gap-2 rounded-full border-2 px-3 text-[0.95rem] font-bold",
+                      "flex min-h-11 items-center gap-2 rounded-full border-2 px-3 text-[0.95rem] font-bold transition-[transform,background-color] duration-150 hover:-translate-y-0.5 active:translate-y-0.5",
                       on ? "border-asfalto bg-white" : "border-linea bg-banqueta text-grava line-through",
                     )}
                   >
@@ -228,7 +228,7 @@ export function CitizenMap({
                     }}
                     aria-current={sel ? "true" : undefined}
                     className={cn(
-                      "flex w-full gap-3 p-4 text-left transition-colors",
+                      "group flex w-full gap-3 p-4 text-left transition-colors",
                       sel ? "bg-pintura/25" : "hover:bg-banqueta",
                     )}
                   >
@@ -239,13 +239,18 @@ export function CitizenMap({
                         src={r.photo_url}
                         alt=""
                         loading="lazy"
-                        className="size-20 shrink-0 rounded-lg border border-linea bg-banqueta object-cover"
+                        className="size-20 shrink-0 rounded-lg border border-linea bg-banqueta object-cover transition-transform duration-200 group-hover:scale-105"
                       />
                     )}
                     <span className="min-w-0 flex-1">
                       <span className="flex items-baseline justify-between gap-2">
-                        <span className="text-sm font-bold" style={{ color: u.value === "no_urgente" ? "#7a5c00" : u.color }}>
-                          {u.label}
+                        <span className="flex items-center gap-2">
+                          <span className="text-sm font-bold" style={{ color: u.value === "no_urgente" ? "#7a5c00" : u.color }}>
+                            {u.label}
+                          </span>
+                          {isNew(r.created_at) && (
+                            <span className="rounded-full bg-asfalto px-2 py-0.5 text-xs font-bold text-pintura">Nuevo</span>
+                          )}
                         </span>
                         <span className="shrink-0 text-sm text-grava">{formatDateShort(r.created_at)}</span>
                       </span>
@@ -266,4 +271,9 @@ export function CitizenMap({
       )}
     </div>
   );
+}
+
+/** Reportado en las últimas 24 horas. */
+function isNew(iso: string) {
+  return Date.now() - new Date(iso).getTime() < 24 * 60 * 60 * 1000;
 }

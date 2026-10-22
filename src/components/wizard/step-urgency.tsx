@@ -20,8 +20,10 @@ export function StepUrgency({ value, onChange }: { value: Urgency | null; onChan
             <label
               key={key}
               className={cn(
-                "group relative flex min-h-24 cursor-pointer overflow-hidden rounded-xl border-2 bg-white transition-shadow has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-asfalto",
-                selected ? "border-asfalto shadow-[0_0_0_3px_var(--color-asfalto)]" : "border-linea hover:border-grava",
+                "group relative flex min-h-24 cursor-pointer overflow-hidden rounded-xl border-2 bg-white transition-[transform,box-shadow,border-color] duration-150 hover:-translate-y-0.5 active:translate-y-0.5 has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-asfalto",
+                selected
+                  ? "border-asfalto shadow-[0_0_0_3px_var(--color-asfalto),0_6px_0_3px_var(--color-asfalto)]"
+                  : "border-linea hover:border-asfalto hover:shadow-[0_4px_0_0_var(--color-linea)]",
               )}
             >
               <input
@@ -37,7 +39,10 @@ export function StepUrgency({ value, onChange }: { value: Urgency | null; onChan
                 style={{ background: u.color, color: u.onColor }}
                 aria-hidden
               >
-                <Icon className="size-9" strokeWidth={2.25} />
+                <Icon
+                  className="size-9 transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-6"
+                  strokeWidth={2.25}
+                />
               </span>
               <span className="flex flex-1 flex-col justify-center px-4 py-3" style={{ background: selected ? u.soft : undefined }}>
                 <span className="text-xl font-extrabold">{u.label}</span>
@@ -50,7 +55,7 @@ export function StepUrgency({ value, onChange }: { value: Urgency | null; onChan
                 )}
                 aria-hidden
               >
-                {selected && <Check className="size-5" strokeWidth={3} />}
+                {selected && <Check className="size-5 animate-pop" strokeWidth={3} />}
               </span>
             </label>
           );

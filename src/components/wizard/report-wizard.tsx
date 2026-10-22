@@ -18,6 +18,7 @@ const LAST = STEPS.length - 1;
 
 export function ReportWizard({ authorityName, authorityEmail }: { authorityName: string; authorityEmail: string }) {
   const [step, setStep] = useState(0);
+  const [dir, setDir] = useState<1 | -1>(1);
   const [maxReached, setMaxReached] = useState(0);
   const [draft, setDraft] = useState<ReportDraft>(EMPTY);
   const [photoBusy, setPhotoBusy] = useState(false);
@@ -60,6 +61,7 @@ export function ReportWizard({ authorityName, authorityEmail }: { authorityName:
   const goTo = (i: number) => {
     setHint(null);
     setSubmitError(null);
+    setDir(i >= step ? 1 : -1);
     setStep(i);
     setMaxReached((m) => Math.max(m, i));
   };
@@ -143,7 +145,7 @@ export function ReportWizard({ authorityName, authorityEmail }: { authorityName:
       <RoadProgress step={step} maxReached={maxReached} onJump={goTo} />
 
       <section
-        className="mt-5 rounded-2xl border-2 border-linea bg-white"
+        className="mt-5 overflow-x-clip rounded-2xl border-2 border-asfalto bg-white shadow-[0_6px_0_0_var(--color-asfalto)]"
         aria-labelledby="titulo-paso"
       >
         <header className="px-5 pt-5 sm:px-8 sm:pt-7">
@@ -154,13 +156,17 @@ export function ReportWizard({ authorityName, authorityEmail }: { authorityName:
             id="titulo-paso"
             ref={headingRef}
             tabIndex={-1}
-            className="mt-1 text-[1.75rem] font-extrabold leading-tight tracking-tight outline-none sm:text-[2.125rem]"
+            key={`t-${step}`}
+            className={`mt-1 text-[1.75rem] font-extrabold leading-tight tracking-tight outline-none sm:text-[2.125rem] ${dir > 0 ? "animate-step-in" : "animate-step-back"}`}
           >
             {current.title}
           </h2>
         </header>
 
-        <div className="px-5 py-5 sm:px-8 sm:py-6">
+        <div
+          key={step}
+          className={`px-5 py-5 sm:px-8 sm:py-6 ${dir > 0 ? "animate-step-in" : "animate-step-back"}`}
+        >
           {step === 0 && <StepLocation value={draft.location} onChange={(v) => update("location", v)} />}
           {step === 1 && <StepUrgency value={draft.urgency} onChange={(v) => update("urgency", v)} />}
           {step === 2 && (

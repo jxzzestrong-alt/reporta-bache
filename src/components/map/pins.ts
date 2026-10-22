@@ -22,7 +22,7 @@ export function urgencyIcon(urgency: Urgency, selected = false) {
     const u = URGENCY[urgency];
     icon = L.divIcon({
       className: `pin-icon${selected ? " pin-selected" : ""}`,
-      html: pinSvg(u.color, `<circle cx="18" cy="18" r="6.5" fill="${u.onColor}"/>`),
+      html: `<span class="pin-drop">${pinSvg(u.color, `<circle cx="18" cy="18" r="6.5" fill="${u.onColor}"/>`)}</span>`,
       iconSize: [36, 46],
       iconAnchor: [18, 45],
       popupAnchor: [0, -40],

@@ -34,9 +34,12 @@ export function ReportSuccess({
   }[report.email_status];
 
   return (
-    <div className="overflow-hidden rounded-2xl border-2 border-asfalto bg-white">
-      <div className="bg-letrero px-5 py-6 text-white sm:px-8">
-        <CircleCheckBig className="size-12" aria-hidden />
+    <div className="overflow-hidden rounded-2xl border-2 border-asfalto bg-white shadow-[0_6px_0_0_var(--color-asfalto)]">
+      <div className="relative overflow-hidden bg-letrero px-5 py-6 text-white sm:px-8">
+        <Confeti />
+        <span className="flex size-16 animate-pop items-center justify-center rounded-full bg-white text-letrero">
+          <CircleCheckBig className="size-10" aria-hidden />
+        </span>
         <h2 className="mt-3 text-3xl font-extrabold leading-tight" tabIndex={-1} id="exito">
           ¡Reporte enviado!
         </h2>
@@ -46,7 +49,9 @@ export function ReportSuccess({
       <div className="space-y-5 px-5 py-6 sm:px-8">
         <div>
           <p className="text-sm font-semibold text-grava">Tu folio</p>
-          <p className="font-mono text-4xl font-bold tracking-tight sm:text-5xl">#{report.folio}</p>
+          <p className="inline-block animate-pop rounded-xl border-2 border-dashed border-asfalto bg-pintura/30 px-3 py-1 font-mono text-4xl font-bold tracking-tight [animation-delay:150ms] sm:text-5xl">
+            #{report.folio}
+          </p>
           <p className="mt-1 text-grava">{formatDateTime(report.created_at)}</p>
           <UrgencyBadge urgency={report.urgency} className="mt-3" />
         </div>
@@ -77,6 +82,29 @@ export function ReportSuccess({
           <MapPinPlus aria-hidden /> Reportar otro bache
         </Button>
       </div>
+    </div>
+  );
+}
+
+const COLORES = ["#ffc72c", "#ffffff", "#c1121f", "#c2410c", "#ffe08a"];
+
+/** Lluvia breve de confeti con los colores de la app (se omite con "reducir movimiento"). */
+function Confeti() {
+  const piezas = Array.from({ length: 28 }, (_, i) => {
+    const left = (i * 37) % 100;
+    return {
+      left: `${left}%`,
+      background: COLORES[i % COLORES.length],
+      animationDelay: `${(i % 7) * 70}ms`,
+      "--dx": `${((i * 53) % 80) - 40}px`,
+      "--rot": `${((i * 97) % 540) - 270}deg`,
+    } as React.CSSProperties;
+  });
+  return (
+    <div className="pointer-events-none absolute inset-0 motion-reduce:hidden" aria-hidden>
+      {piezas.map((style, i) => (
+        <span key={i} className="confeti" style={style} />
+      ))}
     </div>
   );
 }

@@ -154,10 +154,13 @@ export function StepLocation({
     <div className="space-y-5">
       {/* GPS */}
       <div>
-        <Button variant="paint" size="xl" className="w-full" onClick={locateMe} disabled={gps.loading}>
-          {gps.loading ? <LoaderCircle className="animate-spin" aria-hidden /> : <LocateFixed aria-hidden />}
-          {gps.loading ? "Buscando tu ubicación…" : "Usar mi ubicación actual"}
-        </Button>
+        {/* El aro amarillo invita a tocar el botón mientras no haya un punto marcado */}
+        <span className={`block rounded-[var(--radius-control)] ${!value && !gps.loading ? "animate-ring" : ""}`}>
+          <Button variant="paint" size="xl" className="w-full" onClick={locateMe} disabled={gps.loading}>
+            {gps.loading ? <LoaderCircle className="animate-spin" aria-hidden /> : <LocateFixed aria-hidden />}
+            {gps.loading ? "Buscando tu ubicación…" : "Usar mi ubicación actual"}
+          </Button>
+        </span>
         <p className="mt-2 text-center text-[0.95rem] text-grava">Párate junto al bache y tócalo. Tu celular te pedirá permiso.</p>
         {gps.error && (
           <p role="alert" className="mt-3 flex gap-2 rounded-lg border-2 border-alerta/40 bg-[#FDE8EA] p-3 text-[0.95rem]">
@@ -231,7 +234,7 @@ export function StepLocation({
       {/* Punto elegido */}
       {value && (
         <div
-          className={`rounded-xl border-2 p-4 ${outside ? "border-alerta bg-[#FDE8EA]" : "border-letrero bg-letrero-suave"}`}
+          className={`animate-pop rounded-xl border-2 p-4 ${outside ? "border-alerta bg-[#FDE8EA]" : "border-letrero bg-letrero-suave"}`}
           aria-live="polite"
         >
           <div className="flex gap-3">
