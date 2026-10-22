@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+/*
+  Paleta inspirada en la vía pública:
+  asfalto, pintura de señalamiento vial y verde de letrero informativo.
+  Pensada para leerse bajo el sol de Sonora: fondos claros, texto casi negro, bordes firmes.
+*/
+@theme {
+  --color-asfalto: #1b2125;
+  --color-asfalto-2: #2c343a;
+  --color-grava: #5b6468;
+  --color-banqueta: #eef0ee;
+  --color-linea: #d5d9d7;
+  --color-pintura: #ffc72c;
+  --color-pintura-oscura: #e0a800;
+  --color-letrero: #00694a;
+  --color-letrero-suave: #e3f2ec;
+  --color-alerta: #c1121f;
+
+  --font-sans: var(--font-overpass), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-overpass-mono), ui-monospace, monospace;
+
+  --radius-control: 0.625rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-banqueta);
+    color: var(--color-asfalto);
+    font-size: 1.0625rem; /* 17px: más legible para todas las edades */
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-asfalto);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px var(--color-pintura);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Línea central de carretera: el sello visual de la app */
+@utility lane-dashes {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-pintura) 0 28px,
+    transparent 28px 48px
+  );
+  background-size: 100% 4px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@utility asphalt {
+  background-color: var(--color-asfalto);
+  background-image:
+    radial-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    radial-gradient(rgb(0 0 0 / 0.25) 1px, transparent 1px);
+  background-size: 7px 7px, 11px 11px;
+  background-position: 0 0, 3px 5px;
+}
+
+/* ── Leaflet: ajustes para que combine con la interfaz ── */
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: #dfe3e1;
+}
+.leaflet-control-zoom a {
+  width: 44px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  font-size: 22px !important;
+  color: var(--color-asfalto) !important;
+}
+.leaflet-bar {
+  border: 2px solid var(--color-asfalto) !important;
+  border-radius: var(--radius-control) !important;
+  overflow: hidden;
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  border: 2px solid var(--color-asfalto);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.25);
+}
+.leaflet-popup-content {
+  margin: 0;
+  width: 260px !important;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.leaflet-popup-close-button {
+  width: 36px !important;
+  height: 36px !important;
+  font-size: 26px !important;
+  color: #fff !important;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.9);
+  z-index: 2;
+}
+.pin-icon {
+  background: none;
+  border: none;
+}
+.pin-selected svg {
+  transform: scale(1.25);
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 0 0 #fff) drop-shadow(0 3px 4px rgb(0 0 0 / 0.45));
+}
+
+@media print {
+  body {
+    background: #fff;
+    font-size: 12pt;
+  }
+  @page {
+    margin: 14mm;
+  }
+}
