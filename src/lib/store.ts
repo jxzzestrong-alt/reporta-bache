@@ -29,6 +29,18 @@ function supabaseSecretKey() {
   return process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || "";
 }
 
+/** Configuración pública para el tiempo real del navegador (la clave anon/publishable es pública por diseño). */
+export function publicSupabaseConfig() {
+  const url = supabaseUrl();
+  const key =
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_PUBLISHABLE_KEY ||
+    "";
+  return url && key ? { url, key } : null;
+}
+
 export function isDemoMode() {
   return !(supabaseUrl() && supabaseSecretKey());
 }

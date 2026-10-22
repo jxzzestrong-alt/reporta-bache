@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CitizenMap } from "@/components/citizen-map";
 import { DemoBanner } from "@/components/demo-banner";
-import { listReports } from "@/lib/store";
+import { listReports, publicSupabaseConfig } from "@/lib/store";
 import type { Report } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +32,7 @@ export default async function MapaPage({ searchParams }: { searchParams: Promise
           No pudimos cargar los reportes guardados. El mapa mostrará los nuevos en cuanto lleguen.
         </p>
       )}
-      <CitizenMap initialReports={reports} initialFolio={folio} />
+      <CitizenMap initialReports={reports} initialFolio={folio} realtime={publicSupabaseConfig()} />
     </>
   );
 }

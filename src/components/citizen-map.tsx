@@ -4,7 +4,7 @@ import { LoaderCircle, MapPinPlus, Search } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { supabaseBrowser } from "@/lib/supabase-browser";
+import { supabaseBrowser, type PublicSupabaseConfig } from "@/lib/supabase-browser";
 import type { Report, Urgency } from "@/lib/types";
 import { URGENCY, URGENCY_ORDER } from "@/lib/urgency";
 import { cn, formatDateShort } from "@/lib/utils";
@@ -24,7 +24,15 @@ const ReportsMap = dynamic(() => import("./map/reports-map"), {
 
 type Live = "conectando" | "en-vivo" | "cada-30s";
 
-export function CitizenMap({ initialReports, initialFolio }: { initialReports: Report[]; initialFolio?: string }) {
+export function CitizenMap({
+  initialReports,
+  initialFolio,
+  realtime,
+}: {
+  initialReports: Report[];
+  initialFolio?: string;
+  realtime: PublicSupabaseConfig | null;
+}) {
   const [reports, setReports] = useState<Report[]>(initialReports);
   const [active, setActive] = useState<Set<Urgency>>(new Set(URGENCY_ORDER));
   const [text, setText] = useState("");
@@ -47,7 +55,7 @@ export function CitizenMap({ initialReports, initialFolio }: { initialReports: R
 
   // ── Actualización en tiempo real ──
   useEffect(() => {
-    const sb = supabaseBrowser();
+    const sb = supabaseBrowser(realtime);
     if (sb) {
       const channel = sb
         .channel("reportes-en-vivo")
@@ -78,7 +86,7 @@ export function CitizenMap({ initialReports, initialFolio }: { initialReports: R
     };
     const t = setInterval(refresh, 30000);
     return () => clearInterval(t);
-  }, [upsert]);
+  }, [upsert, realtime]);
 
   const counts = useMemo(() => {
     const c: Record<Urgency, number> = { muy_urgente: 0, urgente: 0, no_urgente: 0 };

@@ -1,17 +1,19 @@
 "use client";
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { SUPABASE_PUBLIC } from "./config";
+
+export interface PublicSupabaseConfig {
+  url: string;
+  key: string;
+}
 
 let client: SupabaseClient | null = null;
 
 /** Cliente público (solo lectura gracias a RLS). Devuelve null en modo de prueba. */
-export function supabaseBrowser() {
-  if (!SUPABASE_PUBLIC.url || !SUPABASE_PUBLIC.anonKey) return null;
+export function supabaseBrowser(config: PublicSupabaseConfig | null) {
+  if (!config?.url || !config.key) return null;
   if (!client) {
-    client = createClient(SUPABASE_PUBLIC.url, SUPABASE_PUBLIC.anonKey, {
-      auth: { persistSession: false },
-    });
+    client = createClient(config.url, config.key, { auth: { persistSession: false } });
   }
   return client;
 }
