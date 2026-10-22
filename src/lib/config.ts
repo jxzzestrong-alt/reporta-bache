@@ -25,7 +25,8 @@ export const GOOGLE_MAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
 
 export const SUPABASE_PUBLIC = {
   url: process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-  anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
+  // Acepta el nombre clásico (anon) o el nuevo (publishable) que usa la integración de Vercel.
+  anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "",
 };
 
 export const COMMENT_MAX = 500;

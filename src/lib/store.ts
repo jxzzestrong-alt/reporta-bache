@@ -20,16 +20,25 @@ export interface NewReportInput {
 
 const BUCKET = process.env.SUPABASE_BUCKET || "fotos-baches";
 
+function supabaseUrl() {
+  return process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
+}
+
+/** Clave secreta: nombre clásico (service_role) o nuevo (secret key). */
+function supabaseSecretKey() {
+  return process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || "";
+}
+
 export function isDemoMode() {
-  return !(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  return !(supabaseUrl() && supabaseSecretKey());
 }
 
 let admin: SupabaseClient | null = null;
 function supabaseAdmin() {
   if (!admin) {
     admin = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      supabaseUrl(),
+      supabaseSecretKey(),
       { auth: { persistSession: false, autoRefreshToken: false } },
     );
   }
